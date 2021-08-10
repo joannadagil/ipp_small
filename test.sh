@@ -10,7 +10,7 @@ do
     TEST=${f%.in}
 
     valgrind --error-exitcode=15 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all -q\
-	  "${PROJECT}" <$f >${f%.in}mine.out 2>${f%.in}mine.err
+	  ${PROG} <$f >${f%.in}2.out 2>${f%.in}2.err
     
     if [diff ${f%.in}2.out ${f%.in}.out || diff ${f%.in}2.err ${f%.in}.err]
     then
@@ -18,9 +18,12 @@ do
     else
       echo -e "$TEST - wrong"
     fi
+    
+    rm ${f%.in}2.out ${f%.in}2.err
 done
 
 
+<<COMMENT1
 if (($# != 2))
 then
   # >&2 redirects standard output to standard error
@@ -45,3 +48,4 @@ do
   # echo $((RANDOM % RANGE))
   echo $((`od -vAn -N4 -tu4 < /dev/random` % RANGE))
 done
+COMMENT1
