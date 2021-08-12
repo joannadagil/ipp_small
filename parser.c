@@ -131,6 +131,7 @@ static inline void sort_nan(char **n, int l, int r){
 
 int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
     int validity = valid(line);
+    //int validity = VALID;
     if(validity == IGNORED)
         return IGNORED;
     if(validity == INVALID)
