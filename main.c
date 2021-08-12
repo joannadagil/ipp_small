@@ -23,12 +23,12 @@ int main(){
     char **nan;
     int n_size, nan_size;
 	while ((read = getline(&row, &size, stdin)) != -1){
-        if (errno == ENOMEM) exit(1);
+        //if (errno == ENOMEM) exit(1);
         int valid = process_line(row, &n, &n_size, &nan, &nan_size);
-        if(valid > 0)
-            data = add_line(n, n_size, nan, line_no, data, &all_lines);
-        if(valid < 0)
-            fprintf(stderr, "ERROR %d\n", line_no);
+        //if(valid > 0)
+        //    data = add_line(n, n_size, nan, line_no, data, &all_lines);
+        //if(valid < 0)
+        //    fprintf(stderr, "ERROR %d\n", line_no);
         line_no++;
 	}
     delete_tree(data);
