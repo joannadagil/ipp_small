@@ -139,6 +139,8 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     // validity == VALID
     tolower_line(line); 
 
+    return INVALID;
+
     *n = malloc(STARTINGSIZE * sizeof(long double));
     if(n == NULL) exit(1);
     *nan = malloc(STARTINGSIZE * sizeof(char*));
