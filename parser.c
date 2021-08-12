@@ -136,7 +136,9 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
         return IGNORED;
     if(validity == INVALID)
         return INVALID;
+    // validity == VALID
     tolower_line(line); 
+
     *n = malloc(STARTINGSIZE * sizeof(long double));
     if(n == NULL) exit(1);
     *nan = malloc(STARTINGSIZE * sizeof(char*));
@@ -144,6 +146,9 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     int n_size = STARTINGSIZE, nan_size = STARTINGSIZE;
     *n_i = 0;
     *nan_i = 0;
+
+    return INVALID;
+
     char *word;
     word = strtok(line, DELIMITERS);
     char end1 = 1;
