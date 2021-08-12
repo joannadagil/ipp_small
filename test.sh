@@ -10,7 +10,7 @@ do
     #valgrind --error-exitcode=15 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all -q\
 	  ./${PROG} < ${TEST} > ${TEST%.in}2.out 2> ${TEST%.in}2.err
     
-    if [diff ${TEST%.in}2.out ${TEST%.in}.out || diff ${TEST%.in}2.err ${TEST%.in}.err]
+    if [ [diff ${TEST%.in}2.out ${TEST%.in}.out] || [diff ${TEST%.in}2.err ${TEST%.in}.err] ]
     then
       echo -e "$TEST - ok"
     else
