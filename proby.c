@@ -10,7 +10,7 @@ int main(){
     printf("mama\n");
 
     size_t size = 100;
-	char *row;
+	char *row = NULL;
     //Tree data;
     //data = NULL;
     //List_list all_lines;
