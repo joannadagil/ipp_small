@@ -1,6 +1,8 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 
 int main(){
@@ -24,4 +26,5 @@ int main(){
 	}
 
     return 0;
+    //    joannadagil
 }
