@@ -21,9 +21,9 @@ int main(){
     char **nan;
     int n_size, nan_size;
 
-    //while ((read = getline(&row, &size, stdin)) != -1){
-    //    line_no++;
-	//}
+    while ((read = getline(&row, &size, stdin)) != -1){
+        line_no++;
+	}
 
     return 0;
     //    joannadagil
