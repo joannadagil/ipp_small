@@ -11,8 +11,8 @@
 #define INVALID3 32
 #define INVALID4 126
 // cyfry 0-7 w ascii są pomiędzy
-#define MIN8 48
-#define MAX8 55
+#define MIN8 '0'
+#define MAX8 '7'
 
 #define DELIMITERS " \t\n\v\f\r\n"
 #define STARTINGSIZE 100
@@ -59,7 +59,8 @@ static inline long double octal_string_to_ld(char *word){
 }
 
 /* *end = 0 jeśli word to liczba ósemkowa
-   zwraca liczbę zapisaną ósemkowo jeśli to liczba ósemkowa */
+   zamienia ją na 10tną
+   (tf?) zwraca liczbę zapisaną ósemkowo jeśli to liczba ósemkowa */
 static inline long double octal(char *word, char **end){
     char *word2;
     word2 = word;
@@ -67,12 +68,12 @@ static inline long double octal(char *word, char **end){
         while(*word != 0 && MIN8 <= *word && *word <= MAX8){
             word++;
         }
-        if(*word == 0){
-            *end = word;
+        if(*word == 0){ // jest to liczba ósemkowa
+            *end = word; //ain't it wrong?
             return octal_string_to_ld(word2);
         }
     }
-    *end = word;
+    *end = word; // może coś innego bo może nie działać dla jakichś edge casów chociaż dla 010 dziala
     return 0.;
 }
 
@@ -127,54 +128,103 @@ static inline void sort_nan(char **n, int l, int r){
     if(i < r) sort_nan(n, i, r);
 }
 
+
 // ----------------------------------------------------------------------
 
-int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
-    int validity = valid(line);
-    //int validity = VALID;
-    if(validity == IGNORED)
-        return IGNORED;
-    if(validity == INVALID)
-        return INVALID;
-    // validity == VALID
-    tolower_line(line); 
+int save_number(long double **n, int *n_i, int n_size, long double number){
+    if(*n_i == n_size){
+        n_size *= 2;
+        *n = realloc(*n, n_size * sizeof(long double));
+        if(n == NULL) exit(1);
+    }
+    *(*n + *n_i) = number;
+    (*n_i)++;
+    return n_size;
+}
 
-    return INVALID;
+int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
+    if(*nan_i == nan_size){
+        nan_size = nan_size * 2;
+        *nan = realloc(*nan, nan_size * sizeof(char*));
+        if(nan == NULL) exit(1);
+    }
+
+    //policznie word_length
+    int word_length = 0;
+    char *word2;
+    word2 = word;
+    while(*word2 != 0){
+        word2++;
+        word_length++;
+    }
+
+    char *word_copy = malloc(word_length * sizeof(char));
+    if(word_length != 0 && word == NULL) exit(1); // wczesniej zamiast word bylo n, idk why ale moze to cos popsuje jeszcze
+    strcpy(word_copy, word);
+    *(*nan + *nan_i) = word_copy;
+    (*nan_i)++;
+    return nan_size;
+}
+
+void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i, int *nan_size, int *n_size) {
+    
+    char *end; // wskaznik czy slowo jest liczba (=NULL) czy nieliczbą (=/=NULL)
+    long double number = octal(word, &end);
+    
+    if(*end != 0) // nie osemkowa wiec jeszcze nie zamieniona na long double
+            number = strtold(word, &end); //wiec zamieniam na ld
+        if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') *end = 0; //jesli +/- przed 16tokową to co xd?
+        if(*word == '0' && *(word + 1) == 'x' && *(word + 2) == 0){
+            *end = 0;
+            number = 0;
+        }
+        if(*end == 0)
+            *n_size = save_number(n, n_i, *n_size, number);
+        else
+            *nan_size = save_nan(nan, nan_i, *nan_size, word);
+}
+
+int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
+    
+    int validity = valid(line);
+    if(validity == IGNORED || validity == INVALID)
+        return validity;
+
+    tolower_line(line); 
 
     *n = malloc(STARTINGSIZE * sizeof(long double));
     if(n == NULL) exit(1);
     *nan = malloc(STARTINGSIZE * sizeof(char*));
     if(nan == NULL) exit(1);
     int n_size = STARTINGSIZE, nan_size = STARTINGSIZE;
-    *n_i = 0;
-    *nan_i = 0;
-
-    return INVALID;
+    *n_i = 0; *nan_i = 0; // iteratory po tablicach ze słowami i liczbami
 
     char *word;
     word = strtok(line, DELIMITERS);
-    char end1 = 1;
-    char *end;
-    end = &end1;
-    long double number;
+    
+    //char end1 = 1;
+    //char *end;
+    //end = &end1;  //TODO chyba 
+    //long double number;
+
     while(word != NULL){
-        number = octal(word, &end);
-        if(*end != 0)
-            number = strtold(word, &end);
-        if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') *end = 0;
+        /*number = octal(word, &end);
+        if(*end != 0) // nie osemkowa wiec jeszcze nie zamieniona na long double
+            number = strtold(word, &end); //wiec zamieniam na ld
+        if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') *end = 0; //jesli +/- przed 16tokową to co xd?
         if(*word == '0' && *(word + 1) == 'x' && *(word + 2) == 0){
             *end = 0;
             number = 0;
         }
-        if(*end == 0){
+        if(*end == 0){ //zapisanie jako liczba
             if(*n_i == n_size){
-                n_size = n_size * 2;
+                n_size *= 2;
                 *n = realloc(*n, n_size * sizeof(long double));
                 if(n == NULL) exit(1);
             }
             *(*n + *n_i) = number;
             (*n_i)++;
-        }else{
+        }else{  //zapisanie jako nieliczba
             if(*nan_i == nan_size){
                 nan_size = nan_size * 2;
                 *nan = realloc(*nan, nan_size * sizeof(char*));
@@ -192,9 +242,12 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
             strcpy(word_copy, word);
             *(*nan + *nan_i) = word_copy;
             (*nan_i)++;
-        }
+        }*/
+
+        process_word(word, n, n_i, nan, nan_i, &nan_size, &n_size);
         word = strtok(NULL, DELIMITERS);
     }
+    
     sort_n(*n, 0, *n_i);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i);
     return VALID;
