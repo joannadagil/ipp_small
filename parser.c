@@ -55,8 +55,7 @@ static inline long double octal_string_to_ld(char *word){
         result = result * 8 + (*word - MIN8);
         word++;
     }
-    printf("%Lf\n", result - 1);
-    return (result - 1); //idk to -1
+    return result; 
 }
 
 /* *end = 0 jeśli word to liczba ósemkowa
