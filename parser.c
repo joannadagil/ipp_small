@@ -201,11 +201,6 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
 
     char *word;
     word = strtok(line, DELIMITERS);
-    
-    //char end1 = 1;
-    //char *end;
-    //end = &end1;  //TODO chyba 
-    //long double number;
 
     while(word != NULL){
         /*number = octal(word, &end);
@@ -246,6 +241,7 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
 
         process_word(word, n, n_i, nan, nan_i, &nan_size, &n_size);
         word = strtok(NULL, DELIMITERS);
+        
     }
     
     sort_n(*n, 0, *n_i);

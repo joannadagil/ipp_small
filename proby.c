@@ -7,8 +7,6 @@
 
 int main(){
 
-    printf("mama\n");
-
     size_t size = 100;
 	char *row = NULL;
     //Tree data;
