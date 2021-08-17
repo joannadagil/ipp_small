@@ -18,11 +18,14 @@ void add_list(List list, int x){
 }
 
 void print_delete_list(List list){
-    while(list != NULL){
-        printf("%d ", list->value);
-        List next = list->next;
-        free(list);
-        list = next;
+    if(list != NULL){
+        while(list->next != NULL){
+            printf("%d ", list->value);
+            List next = list->next;
+            free(list);
+            list = next;
+        }
+        printf("%d", list->value);
     }
     printf("\n");
 }
