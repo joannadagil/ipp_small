@@ -55,7 +55,7 @@ static inline long double octal_string_to_ld(char *word){
         result = result * 8 + (*word - MIN8);
         word++;
     }
-    return result;
+    return result - 1; //idk to -1
 }
 
 /* *end = 0 jeśli word to liczba ósemkowa
@@ -241,7 +241,7 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
 
         process_word(word, n, n_i, nan, nan_i, &nan_size, &n_size);
         word = strtok(NULL, DELIMITERS);
-        
+
     }
     
     sort_n(*n, 0, *n_i);
