@@ -10,6 +10,7 @@ List new_list(int x){
     return list;
 }
 
+// dodaje nr linii do listy numerow linii
 void add_list(List list, int x){
     while(list->next != NULL){
         list = list->next;

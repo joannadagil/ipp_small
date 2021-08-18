@@ -196,54 +196,20 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     if(n == NULL) exit(1);
     *nan = malloc(STARTINGSIZE * sizeof(char*));
     if(nan == NULL) exit(1);
-    int n_size = STARTINGSIZE, nan_size = STARTINGSIZE;
-    *n_i = 0; *nan_i = 0; // iteratory po tablicach ze słowami i liczbami
+    int *n_size; int *nan_size;
+    n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
+    *n_size = STARTINGSIZE, *nan_size = STARTINGSIZE;
+    *n_i = 0; *nan_i = 0; // iteratory po tablicach z liczbami i nieliczbami
 
     char *word;
     word = strtok(line, DELIMITERS);
 
     while(word != NULL){
-        /*number = octal(word, &end);
-        if(*end != 0) // nie osemkowa wiec jeszcze nie zamieniona na long double
-            number = strtold(word, &end); //wiec zamieniam na ld
-        if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') *end = 0; //jesli +/- przed 16tokową to co xd?
-        if(*word == '0' && *(word + 1) == 'x' && *(word + 2) == 0){
-            *end = 0;
-            number = 0;
-        }
-        if(*end == 0){ //zapisanie jako liczba
-            if(*n_i == n_size){
-                n_size *= 2;
-                *n = realloc(*n, n_size * sizeof(long double));
-                if(n == NULL) exit(1);
-            }
-            *(*n + *n_i) = number;
-            (*n_i)++;
-        }else{  //zapisanie jako nieliczba
-            if(*nan_i == nan_size){
-                nan_size = nan_size * 2;
-                *nan = realloc(*nan, nan_size * sizeof(char*));
-                if(nan == NULL) exit(1);
-            }
-            int word_length = 0;
-            char *word2;
-            word2 = word;
-            while(*word2 !=0){
-                word2++;
-                word_length++;
-            }
-            char *word_copy = malloc(word_length * sizeof(char));
-            if(word_length != 0 && n == NULL) exit(1);
-            strcpy(word_copy, word);
-            *(*nan + *nan_i) = word_copy;
-            (*nan_i)++;
-        }*/
-
-        process_word(word, n, n_i, nan, nan_i, &nan_size, &n_size);
+        process_word(word, n, n_i, nan, nan_i, nan_size, n_size);
         word = strtok(NULL, DELIMITERS);
-
     }
     
+    free(n_size); free(nan_size);
     sort_n(*n, 0, *n_i);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i);
     return VALID;

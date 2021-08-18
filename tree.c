@@ -131,19 +131,27 @@ static inline Tree insert(long double *n_new, int n_new_size, char **nan_new, in
 
 /* --------------------------------------------- */
 
-Tree add_line(long double *n_new, int n_new_size, char **nan_new, int line, Tree data, List_list *all_lines){
+Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines){
     Tree searched = search(n_new, n_new_size, nan_new, line, data);
     if(searched == NULL)
         return insert(n_new, n_new_size, nan_new, line, data, all_lines);
     add_list(searched->lines, line);
     free(n_new);
-    char **nan2;
-    nan2 = nan_new;
-    while(*nan2 != 0){
+
+    //char **nan2;
+    //nan2 = nan_new;
+
+    for(int i = 0; i < nan_new_size; i++){
+        free(*(nan_new + i));
+    }
+    free(nan_new);
+
+    /*while(*nan2 != 0){ // NULL ?
         free(*nan2);
         nan2++;
     }
-    free(nan_new);
+    free(nan_new);*/
+    
     return data;
 }
 
