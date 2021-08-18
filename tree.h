@@ -16,7 +16,7 @@ struct Node {
     int height;
 };
 
-extern Tree add_line(long double *n_new, int n_new_size, char **nan_new, int line, Tree data, List_list *all_lines);
+extern Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines);
 
 extern void delete_tree(Tree data);
 
