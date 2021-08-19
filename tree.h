@@ -11,7 +11,7 @@ struct Node {
     long double *n; // wskaznik na tablicę liczb wiersza
     int n_size; // ilość liczb w wierszu
     char **nan; // wskaźnik na tablicę wskaźników do nieliczb wiersza
-    // int nan_size;
+    int nan_size;
     List lines; // lista wierszy, które są tej postaci
     Tree left, right;
     int height;

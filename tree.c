@@ -9,13 +9,14 @@ static inline int height(Tree data){
     return data->height;
 }
 
-static inline Tree new_node(long double *n, int n_size, char **nan, int line, List_list *all_lines){
+static inline Tree new_node(long double *n, int n_size, char **nan, int nan_size, int line, List_list *all_lines){
     Tree node;
     node = malloc(sizeof(struct Node));
     if(node == NULL) exit(1);
     node->n = n;
     node->n_size = n_size;
     node->nan = nan;
+    node->nan_size = nan_size;
     node->lines = new_list(line);
     add_list_list(all_lines, node->lines);
     node->left = node->right = NULL;
@@ -116,15 +117,16 @@ static inline Tree balance(long double *n_new, int n_new_size, char **nan_new, T
     return data;
 }
 
+// dodaje nowa linie do drzewa
 // założenie wstępne: wiersz nie może być tozsamy z żadną komórką
-static inline Tree insert(long double *n_new, int n_new_size, char **nan_new, int line, Tree data, List_list *all_lines){
+static inline Tree insert(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines){
     if(data == NULL)
-        return new_node(n_new, n_new_size, nan_new, line, all_lines);
+        return new_node(n_new, n_new_size, nan_new, nan_new_size, line, all_lines);
     int compared = compare(n_new, n_new_size, nan_new, data->n, data->n_size, data->nan);
     if(compared == -1)
-        data->left = insert(n_new, n_new_size, nan_new, line, data->left, all_lines);
+        data->left = insert(n_new, n_new_size, nan_new, nan_new_size, line, data->left, all_lines);
     else
-        data->right = insert(n_new, n_new_size, nan_new, line, data->right, all_lines);
+        data->right = insert(n_new, n_new_size, nan_new, nan_new_size, line, data->right, all_lines);
     data->height = 1 + max_height(data);
     return balance(n_new, n_new_size, nan_new, data);
 }
@@ -134,37 +136,48 @@ static inline Tree insert(long double *n_new, int n_new_size, char **nan_new, in
 Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines){
     Tree searched = search(n_new, n_new_size, nan_new, line, data);
     if(searched == NULL)
-        return insert(n_new, n_new_size, nan_new, line, data, all_lines);
+        return insert(n_new, n_new_size, nan_new, nan_new_size, line, data, all_lines);
+    
+    // wystepuje juz
     add_list(searched->lines, line);
+
+
     free(n_new);
-
-    //char **nan2;
-    //nan2 = nan_new;
-
-    for(int i = 0; i < nan_new_size; i++){
+    for(int i = 0; i < nan_new_size; i++){              //uwalnianie linii ładne tutaj !!
         free(*(nan_new + i));
     }
     free(nan_new);
 
+
+    return data;
+    
+    //char **nan2;
+    //nan2 = nan_new;
     /*while(*nan2 != 0){ // NULL ?
         free(*nan2);
         nan2++;
     }
     free(nan_new);*/
-    
-    return data;
 }
 
 void delete_tree(Tree data){
     if(data){
         free(data->n);
-        char **nan2;
+        
+        /*char **nan2;
         nan2 = data->nan;
         while(*nan2 != 0){
             free(*nan2);
             nan2++;
+        }*/
+
+        for(int i = 0; i < data->nan_size; i++){
+            free(*(data->nan + i));
         }
+
         free(data->nan);
+
+
         delete_tree(data->left);
         delete_tree(data->right);
         free(data);
