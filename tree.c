@@ -176,8 +176,7 @@ void delete_tree(Tree data){
         }
 
         free(data->nan);
-
-
+        
         delete_tree(data->left);
         delete_tree(data->right);
         free(data);

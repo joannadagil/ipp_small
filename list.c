@@ -27,6 +27,7 @@ void print_delete_list(List list){
             list = next;
         }
         printf("%d", list->value);
+        free(list);
     }
     printf("\n");
 }
