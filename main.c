@@ -34,6 +34,7 @@ int main(){
             fprintf(stderr, "ERROR %d\n", line_no);
         line_no++;
 	}
+    free(row);
     delete_tree(data);
     print_delete_list_list(all_lines);
 
