@@ -212,6 +212,11 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
         word = strtok(NULL, DELIMITERS);
     }
     
+    if(nan_i == 0){
+        free(*nan);
+        *nan = NULL;
+    }
+    
     free(n_size); free(nan_size);
     sort_n(*n, 0, *n_i);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i);
