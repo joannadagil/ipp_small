@@ -150,7 +150,7 @@ int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
     }
 
     //policznie word_length
-    int word_length = 1; //0
+    int word_length = 1; // 0? chyba lepiej z 1 tho (valgrind mniej bledow)
     char *word2;
     word2 = word;
     while(*word2 != 0){
