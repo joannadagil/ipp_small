@@ -141,13 +141,11 @@ Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_si
     // wystepuje juz
     add_list(searched->lines, line);
 
-
     free(n_new);
     for(int i = 0; i < nan_new_size; i++){              //uwalnianie linii ładne tutaj !!
         free(*(nan_new + i));
     }
     free(nan_new);
-
 
     return data;
     
