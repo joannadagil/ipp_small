@@ -199,7 +199,7 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
 
     int *n_size; int *nan_size;
     n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
-    if(n_size = NULL || nan_size == NULL) exit(1);
+    if(n_size == NULL || nan_size == NULL) exit(1);
     *n_size = STARTINGSIZE, *nan_size = STARTINGSIZE;
 
     *n_i = 0; *nan_i = 0; // iteratory po tablicach z liczbami i nieliczbami
