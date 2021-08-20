@@ -24,6 +24,7 @@ int main(){
     long double *n;
     char **nan;
     int *n_size; int *nan_size; //gwaizki
+    n_size = NULL; nan_size = NULL;
 
 	while ((read = getline(&row, &size, stdin)) != -1){
         if (errno == ENOMEM) exit(1);
