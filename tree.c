@@ -59,8 +59,12 @@ static inline int compare(long double *n1, int n1_size, char **nan1, int nan1_si
         nan1++; nan2++; iterator++;
     }
 
-    if(*nan1 != NULL) return 1;
-    if(*nan2 != NULL) return -1;
+    /*if(*nan1 != NULL) return 1;
+    if(*nan2 != NULL) return -1;*/
+
+    if(nan1_size - iterator > 0) return 1;
+    if(nan2_size - iterator > 0) return -1;
+
     return 0;
 }
 
