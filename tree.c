@@ -135,7 +135,7 @@ static inline Tree insert(long double *n_new, int n_new_size, char **nan_new, in
 
 Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines){
     Tree searched = search(n_new, n_new_size, nan_new, line, data);
-    if(searched == NULL)
+    if(!searched) // (searched == NULL)
         return insert(n_new, n_new_size, nan_new, nan_new_size, line, data, all_lines);
     
     // wystepuje juz
@@ -176,7 +176,7 @@ void delete_tree(Tree data){
         }
 
         free(data->nan);
-        
+
         delete_tree(data->left);
         delete_tree(data->right);
         free(data);
