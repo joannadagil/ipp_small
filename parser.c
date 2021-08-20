@@ -187,7 +187,7 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
 int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
     
     int validity = valid(line);
-    if(validity == IGNORED || validity == INVALID)
+    if(validity != VALID) //(validity == IGNORED || validity == INVALID)
         return validity;
 
     tolower_line(line); 

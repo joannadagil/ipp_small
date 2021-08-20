@@ -38,7 +38,7 @@ int main(){
     free(row);
     delete_tree(data);
     print_delete_list_list(all_lines);
-    free(n_size);free(nan_size);
+    free(n_size); free(nan_size);
 
     return 0;
 }
