@@ -24,7 +24,7 @@ int main(){
     long double *n;
     char **nan;
     int *n_size; int *nan_size; //gwaizki
-    n_size = NULL; nan_size = NULL;
+    n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
 
 	while ((read = getline(&row, &size, stdin)) != -1){
         if (errno == ENOMEM) exit(1);
@@ -38,6 +38,7 @@ int main(){
     free(row);
     delete_tree(data);
     print_delete_list_list(all_lines);
+    free(n_size);free(nan_size);
 
     return 0;
 }
