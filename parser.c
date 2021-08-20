@@ -194,8 +194,8 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
 
     *n = malloc(STARTINGSIZE * sizeof(long double));
     if(n == NULL) exit(1);
-    *nan = malloc(STARTINGSIZE * sizeof(char*));
-    if(nan == NULL) exit(1);
+    **nan = malloc(STARTINGSIZE * sizeof(char*));
+    if(*nan == NULL) exit(1);
 
     int *n_size; int *nan_size;
     n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
