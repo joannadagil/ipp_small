@@ -19,7 +19,8 @@ static inline Tree new_node(long double *n, int n_size, char **nan, int nan_size
     node->nan_size = nan_size;
     node->lines = new_list(line);
     add_list_list(all_lines, node->lines);
-    node->left = node->right = NULL;
+    node->left = NULL;
+    node->right = NULL;
     node->height = 1;
     return node;
 }
