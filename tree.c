@@ -29,7 +29,7 @@ static inline int min(int x, int y){
     return y;
 }
 
-static inline int compare(long double *n1, int n1_size, char **nan1, long double *n2, int n2_size, char **nan2){
+static inline int compare(long double *n1, int n1_size, char **nan1, int nan1_size, long double *n2, int n2_size, char **nan2, int nan2_size){
     int iterator = 0;
     while(iterator < min(n1_size, n2_size)){
         if(*n1 < *n2) return -1;
@@ -41,6 +41,7 @@ static inline int compare(long double *n1, int n1_size, char **nan1, long double
     if(n1_size - iterator > 0) return 1;
     if(n2_size - iterator > 0) return -1;
 
+    /*
     while(*nan1 != NULL && *nan2 != NULL){
         int compared = strcmp(*nan1, *nan2);
         if(compared < 0) return -1;
@@ -48,20 +49,30 @@ static inline int compare(long double *n1, int n1_size, char **nan1, long double
         nan1 += 1;
         nan2 += 1;
     }
+    */
+
+    iterator = 0;
+    while(iterator < min(nan1_size, nan2_size)){
+        int compared = strcmp(*nan1, *nan2);
+        if(compared < 0) return -1;
+        if(compared > 0) return 1;
+        nan1++; nan2++; iterator++;
+    }
+
     if(*nan1 != NULL) return 1;
     if(*nan2 != NULL) return -1;
     return 0;
 }
 
 // zwraca wierzchołek tożsamy z nowym wierszem albo NULL jeśli go nie ma 
-static inline Tree search(long double *n_new, int n_new_size, char **nan_new, int line, Tree data){
+static inline Tree search(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data){
     if(data == NULL)
         return NULL;
-    int compared = compare(n_new, n_new_size, nan_new, data->n, data->n_size, data->nan);
+    int compared = compare(n_new, n_new_size, nan_new, nan_new_size, data->n, data->n_size, data->nan, data->nan_size);
     if(compared == -1)
-        return search(n_new, n_new_size, nan_new, line, data->left);
+        return search(n_new, n_new_size, nan_new, nan_new_size, line, data->left);
     if(compared == 1)
-        return search(n_new, n_new_size, nan_new, line, data->right);
+        return search(n_new, n_new_size, nan_new, nan_new_size, line, data->right);
     return data;
 }
 
@@ -100,17 +111,17 @@ static inline int difference_height(Tree data){
     return height(data->left) - height(data->right);
 }
 
-static inline Tree balance(long double *n_new, int n_new_size, char **nan_new, Tree data){
+static inline Tree balance(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, Tree data){
     int difference = difference_height(data);
-    if(difference > 1 && compare(n_new, n_new_size, nan_new, data->left->n, data->left->n_size, data->left->nan) == -1)
+    if(difference > 1 && compare(n_new, n_new_size, nan_new, nan_new_size, data->left->n, data->left->n_size, data->left->nan, data->left->nan_size) == -1)
         return rotate_right(data);
-    if(difference > 1 && compare(n_new, n_new_size, nan_new, data->left->n, data->left->n_size, data->left->nan) == 1){
+    if(difference > 1 && compare(n_new, n_new_size, nan_new, nan_new_size, data->left->n, data->left->n_size, data->left->nan, data->left->nan_size) == 1){
         data->left = rotate_left(data->left);
         return rotate_right(data);
     }
-    if(difference < -1 && compare(n_new, n_new_size, nan_new, data->right->n, data->right->n_size, data->right->nan) == 1)
+    if(difference < -1 && compare(n_new, n_new_size, nan_new, nan_new_size, data->right->n, data->right->n_size, data->right->nan, data->right->nan_size) == 1)
         return rotate_left(data);
-    if(difference < -1 && compare(n_new, n_new_size, nan_new, data->right->n, data->right->n_size, data->right->nan) == -1){
+    if(difference < -1 && compare(n_new, n_new_size, nan_new, nan_new_size, data->right->n, data->right->n_size, data->right->nan, data->right->nan_size) == -1){
         data->right = rotate_right(data->right);
         return rotate_left(data);
     }
@@ -122,19 +133,19 @@ static inline Tree balance(long double *n_new, int n_new_size, char **nan_new, T
 static inline Tree insert(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines){
     if(data == NULL)
         return new_node(n_new, n_new_size, nan_new, nan_new_size, line, all_lines);
-    int compared = compare(n_new, n_new_size, nan_new, data->n, data->n_size, data->nan);
+    int compared = compare(n_new, n_new_size, nan_new, nan_new_size, data->n, data->n_size, data->nan, data->nan_size);
     if(compared == -1)
         data->left = insert(n_new, n_new_size, nan_new, nan_new_size, line, data->left, all_lines);
     else
         data->right = insert(n_new, n_new_size, nan_new, nan_new_size, line, data->right, all_lines);
     data->height = 1 + max_height(data);
-    return balance(n_new, n_new_size, nan_new, data);
+    return balance(n_new, n_new_size, nan_new, nan_new_size, data);
 }
 
 /* --------------------------------------------- */
 
 Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines){
-    Tree searched = search(n_new, n_new_size, nan_new, line, data);
+    Tree searched = search(n_new, n_new_size, nan_new, nan_new_size, line, data);
     if(!searched) // (searched == NULL)
         return insert(n_new, n_new_size, nan_new, nan_new_size, line, data, all_lines);
     

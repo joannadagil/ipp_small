@@ -196,9 +196,11 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     if(n == NULL) exit(1);
     *nan = malloc(STARTINGSIZE * sizeof(char*));
     if(nan == NULL) exit(1);
+
     int *n_size; int *nan_size;
     n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
     *n_size = STARTINGSIZE, *nan_size = STARTINGSIZE;
+    
     *n_i = 0; *nan_i = 0; // iteratory po tablicach z liczbami i nieliczbami
 
     char *word;
