@@ -41,16 +41,6 @@ static inline int compare(long double *n1, int n1_size, char **nan1, int nan1_si
     if(n1_size - iterator > 0) return 1;
     if(n2_size - iterator > 0) return -1;
 
-    /*
-    while(*nan1 != NULL && *nan2 != NULL){
-        int compared = strcmp(*nan1, *nan2);
-        if(compared < 0) return -1;
-        if(compared > 0) return 1;
-        nan1 += 1;
-        nan2 += 1;
-    }
-    */
-
     iterator = 0;
     while(iterator < min(nan1_size, nan2_size)){
         int compared = strcmp(*nan1, *nan2);
@@ -58,9 +48,6 @@ static inline int compare(long double *n1, int n1_size, char **nan1, int nan1_si
         if(compared > 0) return 1;
         nan1++; nan2++; iterator++;
     }
-
-    /*if(*nan1 != NULL) return 1;
-    if(*nan2 != NULL) return -1;*/
 
     if(nan1_size - iterator > 0) return 1;
     if(nan2_size - iterator > 0) return -1;
@@ -150,10 +137,9 @@ static inline Tree insert(long double *n_new, int n_new_size, char **nan_new, in
 
 Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_size, int line, Tree data, List_list *all_lines){
     Tree searched = search(n_new, n_new_size, nan_new, nan_new_size, line, data);
-    if(!searched) // (searched == NULL)
+    if(!searched)
         return insert(n_new, n_new_size, nan_new, nan_new_size, line, data, all_lines);
     
-    // wystepuje juz
     add_list(searched->lines, line);
 
     free(n_new);
@@ -163,26 +149,11 @@ Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_si
     free(nan_new);
 
     return data;
-    
-    //char **nan2;
-    //nan2 = nan_new;
-    /*while(*nan2 != 0){ // NULL ?
-        free(*nan2);
-        nan2++;
-    }
-    free(nan_new);*/
 }
 
 void delete_tree(Tree data){
     if(data){
         free(data->n);
-        
-        /*char **nan2;
-        nan2 = data->nan;
-        while(*nan2 != 0){
-            free(*nan2);
-            nan2++;
-        }*/
 
         for(int i = 0; i < data->nan_size; i++){
             free(*(data->nan + i));
