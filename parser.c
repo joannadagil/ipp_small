@@ -198,29 +198,27 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
     long double number = octal(word, &end);
     
     if(*end != 0) // nie osemkowa wiec jeszcze nie zamieniona na long double
-            number = strtold(word, &end); //wiec zamieniam na ld
-        if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') end = word; //jesli +/- przed 16tokową to co xd?
-        if(*word == '0' && *(word + 1) == 'x' && *(word + 2) == 0){
-            *end = 0;
-            number = 0;
+        number = strtold(word, &end); //wiec zamieniam na ld
+    if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') end = word; //jesli +/- przed 16tokową to co xd?
+    if(*word == '0' && *(word + 1) == 'x' && *(word + 2) == 0){
+        *end = 0;
+        number = 0;
+    }
+    if(*word == '0' && *(word + 1) == 'x'){
+        int i = 2;
+        while(*(word + i) != 0 && *end == 0){
+            if(*(word + i) == '.' || *(word + i) == 'p')
+                end = word;
+            i++;
         }
+    }
+    if(*end == 0 && isnan(number))
+        end = word;
 
-        if(*word == '0' && *(word + 1) == 'x'){
-            int i = 2;
-            while(*(word + i) != 0 && *end == 0){
-                if(*(word + i) == '.' || *(word + i) == 'p')
-                    end = word;
-                i++;
-            }
-        }
-
-        if(end == 0 && isnan(number))
-            end = word;
-
-        if(*end == 0)
-            *n_size = save_number(n, n_i, *n_size, number);
-        else
-            *nan_size = save_nan(nan, nan_i, *nan_size, word);
+    if(*end == 0)
+        *n_size = save_number(n, n_i, *n_size, number);
+    else
+        *nan_size = save_nan(nan, nan_i, *nan_size, word);
 }
 
 
