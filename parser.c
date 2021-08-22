@@ -85,7 +85,7 @@ static inline void swap_n(long double a[], int i, int j){
     a[j] = x;
 }
 
-static inline void sort_n(long double n[], int l, int r){
+/*static inline void sort_n(long double n[], int l, int r){
     int i = l, j = r - 1;
     int pivot = (l + r) / 2;
     while(i <= j){
@@ -101,6 +101,27 @@ static inline void sort_n(long double n[], int l, int r){
     }
     if(j > l) sort_n(n, l, j);
     if(i < r) sort_n(n, i, r);
+}*/
+
+static inline int partition_n(char **n, int l, int r){
+    int pivot = r;
+    int i = l - 1;
+    for(int j = l; j <= r - 1; j++){
+        if(n[j] < n[pivot]){
+            i++;
+            swap_n(n, i, j);
+        }
+    }
+    swap_n(n, i + 1, r);
+    return 1 + i;
+}
+
+static inline void sort_n(long double n[], int l, int r){
+    if(l < r){
+        int new = partition_n(n, l, r);
+        sort_n(n, l, new - 1);
+        sort_n(n, new + 1, r);
+    }
 }
 
 static inline void swap_nan(char *nan[], int i, int j){
@@ -130,7 +151,7 @@ static inline void swap_nan(char *nan[], int i, int j){
 }
 */
 
-static inline int partition(char **n, int l, int r){
+static inline int partition_nan(char **n, int l, int r){
     int pivot = r;
     int i = l - 1;
     for(int j = l; j <= r - 1; j++){
@@ -146,26 +167,10 @@ static inline int partition(char **n, int l, int r){
 
 static inline void sort_nan(char **n, int l, int r){
     if(l < r){
-        int new = partition(n, l, r);
+        int new = partition_nan(n, l, r);
         sort_nan(n, l, new - 1);
         sort_nan(n, new + 1, r);
     }
-    
-    /*int i = l, j = r - 1;
-    int pivot = (l + r) / 2;
-    while(i <= j){
-        while(*n[pivot] > *n[i])
-            i++;
-        while(*n[pivot] < *n[j])
-            j--;
-        if(i <= j){
-            swap_nan(n, i, j);
-            i++;
-            j--;
-        }
-    }
-    if(j > l) sort_nan(n, l, j);
-    if(i < r) sort_nan(n, i, r);*/
 }
 
 
