@@ -131,26 +131,6 @@ static inline void swap_nan(char *nan[], int i, int j){
     nan[j] = x;
 }
 
-/*
- static inline void sort_nan(char **n, int l, int r){
-    int i = l, j = r - 1;
-    int pivot = (l + r) / 2;
-    while(i <= j){
-        while(*n[pivot] > *n[i])
-            i++;
-        while(*n[pivot] < *n[j])
-            j--;
-        if(i <= j){
-            swap_nan(n, i, j);
-            i++;
-            j--;
-        }
-    }
-    if(j > l) sort_nan(n, l, j);
-    if(i < r) sort_nan(n, i, r);
-}
-*/
-
 static inline int partition_nan(char **n, int l, int r){
     int pivot = r;
     int i = l - 1;
@@ -223,58 +203,22 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
             *end = 0;
             number = 0;
         }
+
+        if(*word == '0' && *(word + 1) == 'x'){
+            int i = 2;
+            while(*(word + i) != 0 && *end == 0){
+                if(*(word + i) == '.')
+                    end = word;
+                i++;
+            }
+        }
+
         if(*end == 0)
             *n_size = save_number(n, n_i, *n_size, number);
         else
             *nan_size = save_nan(nan, nan_i, *nan_size, word);
 }
 
-/*void kurczaki(char **nan, int nan_size){
-    char kurczak[] = "kurczak";
-    char ipp[] = "ipp";
-    char peczar[] = "peczar"; 
-    int k = 0; int i = 0; int p = 0;
-    for(int j = 0; j < nan_size; j++) {
-        if(strcmp(kurczak, *nan) == 0)
-            k++;
-        if(strcmp(ipp, *nan) == 0)
-            i++;
-        if(strcmp(peczar, *nan) == 0)
-            p++;
-        nan++;    
-    }
-    printf("kurczak: %d  ", k);
-    printf("ipp:     %d  ", i);
-    printf("peczar:  %d\n", p);
-}*/
-
-void kurczaki3(char **nan, int nan_size){
-    char kurczak[] = "kurczak";
-    char ipp[] = "ipp";
-    char peczar[] = "peczar"; 
-    int k = 0; int i = 0; int p = 0; int zmiana = 0;
-    char *last = NULL;
-
-    for(int j = 0; j < nan_size; j++) {
-        if(strcmp(kurczak, *nan) == 0)
-            k++;
-        if(strcmp(ipp, *nan) == 0)
-            i++;
-        if(strcmp(peczar, *nan) == 0)
-            p++;
-        if(last){
-            if(strcmp(last, *nan) != 0){
-                zmiana++;
-            }
-        }
-        last = *nan;
-        nan++;    
-    }
-    printf("kurczak:  %d  ", k);
-    printf("ipp:  %d  ", i);
-    printf("peczar:  %d\n", p);
-    printf("zmiana:  %d\n", zmiana);
-}
 
 int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
     
