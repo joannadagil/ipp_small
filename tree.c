@@ -44,7 +44,7 @@ void kurczaki(char **nan, int nan_size){
         if(strcmp(peczar, *nan) == 0)
             p++;
         if(last){
-            if(strcmp(last, nan) != 0){
+            if(strcmp(last, *nan) != 0){
                 zmiana++;
             }
         }
