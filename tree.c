@@ -29,6 +29,34 @@ static inline int min(int x, int y){
     return y;
 }
 
+void kurczaki(char **nan, int nan_size){
+    char kurczak[] = "kurczak";
+    char ipp[] = "ipp";
+    char peczar[] = "peczar"; 
+    int k = 0; int i = 0; int p = 0; int zmiana = 0;
+    char *last = NULL;
+
+    for(int j = 0; j < nan_size; j++) {
+        if(strcmp(kurczak, *nan) == 0)
+            k++;
+        if(strcmp(ipp, *nan) == 0)
+            i++;
+        if(strcmp(peczar, *nan) == 0)
+            p++;
+        if(last){
+            if(strcmp(last, nan) != 0){
+                zmiana++;
+            }
+        }
+        last = *nan;
+        nan++;    
+    }
+    printf("kurczak: %d  ", k);
+    printf("ipp:     %d  ", i);
+    printf("peczar:  %d\n", p);
+    printf("zmiana:  %d\n", zmiana);
+}
+
 static inline int compare(long double *n1, int n1_size, char **nan1, int nan1_size, long double *n2, int n2_size, char **nan2, int nan2_size){
     int iterator = 0;
     while(iterator < min(n1_size, n2_size)){
@@ -60,6 +88,7 @@ static inline Tree search(long double *n_new, int n_new_size, char **nan_new, in
     if(data == NULL)
         return NULL;
     int compared = compare(n_new, n_new_size, nan_new, nan_new_size, data->n, data->n_size, data->nan, data->nan_size);
+    kurczaki(nan_new, nan_new_size);
     if(compared == -1)
         return search(n_new, n_new_size, nan_new, nan_new_size, line, data->left);
     if(compared == 1)

@@ -198,8 +198,8 @@ void kurczaki(char **nan, int nan_size){
             p++;
         nan++;    
     }
-    printf("kurczak: %d\n", k);
-    printf("ipp:     %d\n", i);
+    printf("kurczak: %d  ", k);
+    printf("ipp:     %d  ", i);
     printf("peczar:  %d\n", p);
 }
 
@@ -231,11 +231,11 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
         word = strtok(NULL, DELIMITERS);
     }
     
-    kurczaki(*nan, *nan_i);
+    //kurczaki(*nan, *nan_i);                     ///hehreerrrrrrrrrrrrrr
     
     free(n_size); free(nan_size);
     sort_n(*n, 0, *n_i);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i);
-    kurczaki(*nan, *nan_i);
+    kurczaki(*nan, *nan_i);                     //hereeeeeeeee
     return VALID;
 }
