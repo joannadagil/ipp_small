@@ -224,7 +224,7 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
             *nan_size = save_nan(nan, nan_i, *nan_size, word);
 }
 
-void kurczaki(char **nan, int nan_size){
+/*void kurczaki(char **nan, int nan_size){
     char kurczak[] = "kurczak";
     char ipp[] = "ipp";
     char peczar[] = "peczar"; 
@@ -241,7 +241,7 @@ void kurczaki(char **nan, int nan_size){
     printf("kurczak: %d  ", k);
     printf("ipp:     %d  ", i);
     printf("peczar:  %d\n", p);
-}
+}*/
 
 void kurczaki3(char **nan, int nan_size){
     char kurczak[] = "kurczak";
@@ -302,10 +302,10 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     //kurczaki(*nan, *nan_i);                     ///hehreerrrrrrrrrrrrrr
     
     free(n_size); free(nan_size);
-    kurczaki3(*nan, *nan_i);  
+    //kurczaki3(*nan, *nan_i);  
     sort_n(*n, 0, *n_i);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i - 1);   // -1
-    kurczaki3(*nan, *nan_i);                     //hereeeeeeeee
+    //kurczaki3(*nan, *nan_i);                     //hereeeeeeeee
     printf("\n");
     return VALID;
 }
