@@ -103,7 +103,7 @@ static inline void swap_n(long double a[], int i, int j){
     if(i < r) sort_n(n, i, r);
 }*/
 
-static inline int partition_n(char **n, int l, int r){
+static inline int partition_n(long double n[], int l, int r){
     int pivot = r;
     int i = l - 1;
     for(int j = l; j <= r - 1; j++){
