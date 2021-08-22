@@ -203,6 +203,34 @@ void kurczaki(char **nan, int nan_size){
     printf("peczar:  %d\n", p);
 }
 
+void kurczaki2(char **nan, int nan_size){
+    char kurczak[] = "kurczak";
+    char ipp[] = "ipp";
+    char peczar[] = "peczar"; 
+    int k = 0; int i = 0; int p = 0; int zmiana = 0;
+    char *last = NULL;
+
+    for(int j = 0; j < nan_size; j++) {
+        if(strcmp(kurczak, *nan) == 0)
+            k++;
+        if(strcmp(ipp, *nan) == 0)
+            i++;
+        if(strcmp(peczar, *nan) == 0)
+            p++;
+        if(last){
+            if(strcmp(last, *nan) != 0){
+                zmiana++;
+            }
+        }
+        last = *nan;
+        nan++;    
+    }
+    printf("kurczak:  %d  ", k);
+    printf("ipp:  %d  ", i);
+    printf("peczar:  %d\n", p);
+    printf("zmiana:  %d\n", zmiana);
+}
+
 int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
     
     int validity = valid(line);
@@ -234,8 +262,10 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     //kurczaki(*nan, *nan_i);                     ///hehreerrrrrrrrrrrrrr
     
     free(n_size); free(nan_size);
+    kurczaki2(*nan, *nan_i);  
     sort_n(*n, 0, *n_i);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i);
-    kurczaki(*nan, *nan_i);                     //hereeeeeeeee
+    kurczaki2(*nan, *nan_i);                     //hereeeeeeeee
+    printf("\n");
     return VALID;
 }

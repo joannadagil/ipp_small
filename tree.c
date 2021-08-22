@@ -88,7 +88,7 @@ static inline Tree search(long double *n_new, int n_new_size, char **nan_new, in
     if(data == NULL)
         return NULL;
     int compared = compare(n_new, n_new_size, nan_new, nan_new_size, data->n, data->n_size, data->nan, data->nan_size);
-    kurczaki2(nan_new, nan_new_size);
+    //kurczaki2(nan_new, nan_new_size);
     if(compared == -1)
         return search(n_new, n_new_size, nan_new, nan_new_size, line, data->left);
     if(compared == 1)
