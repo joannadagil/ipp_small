@@ -17,20 +17,11 @@
 
 #define DELIMITERS " \t\n\v\f\r\n"
 #define STARTINGSIZE 100
-#define ZERO 0
-#define NOTZERO 1
 
 // zmienne zwracane przez funkcje valid
 #define VALID 1
 #define IGNORED 0
 #define INVALID -1
-
-// zmienne zwracane przez funkcję number_type
-#define NANUMBER 0
-#define INT10 1
-#define INT16 2
-#define INT8 3
-#define FLOAT 4
 
 // zmienia litery stringa na lowercase
 static inline void tolower_line(char *line){
@@ -42,7 +33,7 @@ static inline void tolower_line(char *line){
 
 static inline int valid(char *line){
     if(*line == '\n' || *line == '#') return IGNORED;
-    while(*line != 0 && *line != '\n'){ //line -> *line
+    while(*line != 0 && *line != '\n'){
         if(*line < INVALID1 || (INVALID2 < *line && *line < INVALID3) || *line > INVALID4)
             return INVALID;
         line += 1;
@@ -70,11 +61,11 @@ static inline long double octal(char *word, char **end){
             word++;
         }
         if(*word == 0){ // jest to liczba ósemkowa
-            *end = word; //ain't it wrong?
+            *end = word;
             return octal_string_to_ld(word2);
         }
     }
-    *end = word; // może coś innego bo może nie działać dla jakichś edge casów chociaż dla 010 dziala
+    *end = word; 
     return 0.;
 }
 
@@ -85,24 +76,6 @@ static inline void swap_n(long double a[], int i, int j){
     a[i] = a[j];
     a[j] = x;
 }
-
-/*static inline void sort_n(long double n[], int l, int r){
-    int i = l, j = r - 1;
-    int pivot = (l + r) / 2;
-    while(i <= j){
-        while(n[pivot] > n[i])
-            i++;
-        while(n[pivot] < n[j])
-            j--;
-        if(i <= j){
-            swap_n(n, i, j);
-            i++;
-            j--;
-        }
-    }
-    if(j > l) sort_n(n, l, j);
-    if(i < r) sort_n(n, i, r);
-}*/
 
 static inline int partition_n(long double n[], int l, int r){
     int pivot = r;
@@ -176,7 +149,7 @@ int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
     }
 
     //policznie word_length
-    int word_length = 1; // 0? chyba lepiej z 1 tho (valgrind mniej bledow)
+    int word_length = 1; 
     char *word2;
     word2 = word;
     while(*word2 != 0){
