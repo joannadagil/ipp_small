@@ -136,10 +136,10 @@ static inline int partition(char **n, int l, int r){
     for(int j = l; j <= r - 1; j++){
         if(strcmp(n[j], n[pivot]) < 0){
             i++;
-            swap(n, i, j);
+            swap_nan(n, i, j);
         }
     }
-    swap(n, i + 1, r);
+    swap_nan(n, i + 1, r);
     return 1 + i;
 
 }
