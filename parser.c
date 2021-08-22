@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 
 /* niedozwolone znaki x to te:
    x < unvalid1 || (unvalid2 < x && x < unvalid3) || unvalid4 < x
@@ -207,11 +208,14 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
         if(*word == '0' && *(word + 1) == 'x'){
             int i = 2;
             while(*(word + i) != 0 && *end == 0){
-                if(*(word + i) == '.')
+                if(*(word + i) == '.' || *(word + i) == 'p')
                     end = word;
                 i++;
             }
         }
+
+        if(end == 0 && isnan(number))
+            end = word;
 
         if(*end == 0)
             *n_size = save_number(n, n_i, *n_size, number);
