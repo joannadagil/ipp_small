@@ -306,6 +306,6 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     sort_n(*n, 0, *n_i);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i - 1);   // -1
     //kurczaki3(*nan, *nan_i);                     //hereeeeeeeee
-    printf("\n");
+    //printf("\n");
     return VALID;
 }
