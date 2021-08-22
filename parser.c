@@ -110,7 +110,8 @@ static inline void swap_nan(char *nan[], int i, int j){
     nan[j] = x;
 }
 
-static inline void sort_nan(char **n, int l, int r){
+/*
+ static inline void sort_nan(char **n, int l, int r){
     int i = l, j = r - 1;
     int pivot = (l + r) / 2;
     while(i <= j){
@@ -126,6 +127,45 @@ static inline void sort_nan(char **n, int l, int r){
     }
     if(j > l) sort_nan(n, l, j);
     if(i < r) sort_nan(n, i, r);
+}
+*/
+
+static inline int partition(char **n, int l, int r){
+    int pivot = r;
+    int i = l - 1;
+    for(int j = l; j <= r - 1; j++){
+        if(strcmp(n[j], n[pivot]) < 0){
+            i++;
+            swap(n, i, j);
+        }
+    }
+    swap(n, i + 1, r);
+    return 1 + i;
+
+}
+
+static inline void sort_nan(char **n, int l, int r){
+    if(l < r){
+        int new = partition(n, l, r);
+        sort_nan(n, l, new - 1);
+        sort_nan(n, new + 1, r);
+    }
+    
+    /*int i = l, j = r - 1;
+    int pivot = (l + r) / 2;
+    while(i <= j){
+        while(*n[pivot] > *n[i])
+            i++;
+        while(*n[pivot] < *n[j])
+            j--;
+        if(i <= j){
+            swap_nan(n, i, j);
+            i++;
+            j--;
+        }
+    }
+    if(j > l) sort_nan(n, l, j);
+    if(i < r) sort_nan(n, i, r);*/
 }
 
 
@@ -264,7 +304,7 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
     free(n_size); free(nan_size);
     kurczaki3(*nan, *nan_i);  
     sort_n(*n, 0, *n_i);
-    if(*nan_i != 0) sort_nan(*nan, 0, *nan_i);
+    if(*nan_i != 0) sort_nan(*nan, 0, *nan_i - 1);   // -1
     kurczaki3(*nan, *nan_i);                     //hereeeeeeeee
     printf("\n");
     return VALID;
