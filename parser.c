@@ -150,22 +150,6 @@ static inline void sort_nan(char **n, int l, int r){
         sort_nan(n, l, new - 1);
         sort_nan(n, new + 1, r);
     }
-    
-    /*int i = l, j = r - 1;
-    int pivot = (l + r) / 2;
-    while(i <= j){
-        while(*n[pivot] > *n[i])
-            i++;
-        while(*n[pivot] < *n[j])
-            j--;
-        if(i <= j){
-            swap_nan(n, i, j);
-            i++;
-            j--;
-        }
-    }
-    if(j > l) sort_nan(n, l, j);
-    if(i < r) sort_nan(n, i, r);*/
 }
 
 
@@ -213,7 +197,7 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
     
     if(*end != 0) // nie osemkowa wiec jeszcze nie zamieniona na long double
             number = strtold(word, &end); //wiec zamieniam na ld
-        if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') *end = 0; //jesli +/- przed 16tokową to co xd?
+        if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') *end = 1; //jesli +/- przed 16tokową to co xd?
         if(*word == '0' && *(word + 1) == 'x' && *(word + 2) == 0){
             *end = 0;
             number = 0;
@@ -224,26 +208,7 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
             *nan_size = save_nan(nan, nan_i, *nan_size, word);
 }
 
-/*void kurczaki(char **nan, int nan_size){
-    char kurczak[] = "kurczak";
-    char ipp[] = "ipp";
-    char peczar[] = "peczar"; 
-    int k = 0; int i = 0; int p = 0;
-    for(int j = 0; j < nan_size; j++) {
-        if(strcmp(kurczak, *nan) == 0)
-            k++;
-        if(strcmp(ipp, *nan) == 0)
-            i++;
-        if(strcmp(peczar, *nan) == 0)
-            p++;
-        nan++;    
-    }
-    printf("kurczak: %d  ", k);
-    printf("ipp:     %d  ", i);
-    printf("peczar:  %d\n", p);
-}*/
-
-void kurczaki3(char **nan, int nan_size){
+/*void kurczaki3(char **nan, int nan_size){
     char kurczak[] = "kurczak";
     char ipp[] = "ipp";
     char peczar[] = "peczar"; 
@@ -269,7 +234,7 @@ void kurczaki3(char **nan, int nan_size){
     printf("ipp:  %d  ", i);
     printf("peczar:  %d\n", p);
     printf("zmiana:  %d\n", zmiana);
-}
+}*/
 
 int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
     
@@ -299,13 +264,7 @@ int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i)
         word = strtok(NULL, DELIMITERS);
     }
     
-    //kurczaki(*nan, *nan_i);                     ///hehreerrrrrrrrrrrrrr
-    
-    free(n_size); free(nan_size);
-    //kurczaki3(*nan, *nan_i);  
+    free(n_size); free(nan_size); 
     sort_n(*n, 0, *n_i);
-    if(*nan_i != 0) sort_nan(*nan, 0, *nan_i - 1);   // -1
-    //kurczaki3(*nan, *nan_i);                     //hereeeeeeeee
-    //printf("\n");
-    return VALID;
+    if(*nan_i != 0) sort_nan(*nan, 0, *nan_i - 1);
 }
