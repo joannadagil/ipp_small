@@ -16,7 +16,7 @@ do
     echo -e "$DIFF1"
     echo -e "$DIFF2"
     
-    if [[ $DIFF1 == "" || $DIFF2 == "" ]];
+    if [[ $DIFF1 == "" && $DIFF2 == "" ]];
     then
       echo -e "$TEST - ok"
     else
