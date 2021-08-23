@@ -14,11 +14,10 @@ int main(){
 
 	size_t size = STARTVALUE;
 	char *row = NULL;
-    ssize_t read;
+    size_t read;
     int line_no = 1;
 
     Tree data = NULL;
-    //data = NULL;
     List_list all_lines;
     all_lines = NULL;
     long double *n;
