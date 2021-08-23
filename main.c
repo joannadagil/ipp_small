@@ -22,12 +22,12 @@ int main(){
     all_lines = NULL;
     long double *n;
     char **nan;
-    int *n_size; int *nan_size; //gwaizki
+    int *n_size; int *nan_size;
     n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
 
 	while ((read = getline(&row, &size, stdin)) != -1){
         if (errno == ENOMEM) exit(1);
-        int valid = process_line(row, &n, n_size, &nan, nan_size, read); //& z sizów
+        int valid = process_line(row, &n, n_size, &nan, nan_size, read);
         if(valid > 0)
             data = add_line(n, *n_size, nan, *nan_size, line_no, data, &all_lines);
         if(valid < 0)

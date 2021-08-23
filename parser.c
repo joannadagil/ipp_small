@@ -55,8 +55,7 @@ static inline long double octal_string_to_ld(char *word){
 }
 
 /* *end = 0 jeśli word to liczba ósemkowa
-   zamienia ją na 10tną
-   (tf?) zwraca liczbę zapisaną ósemkowo jeśli to liczba ósemkowa */
+   zamienia ją na 10tną */
 static inline long double octal(char *word, char **end){
     char *word2;
     word2 = word;
@@ -162,7 +161,7 @@ int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
     }
 
     char *word_copy = malloc(word_length * sizeof(char));
-    if(word_length != 0 && word == NULL) exit(1); // wczesniej zamiast word bylo n, idk why ale moze to cos popsuje jeszcze
+    if(word_length != 0 && word == NULL) exit(1);
     strcpy(word_copy, word);
     *(*nan + *nan_i) = word_copy;
     (*nan_i)++;
@@ -176,7 +175,7 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
     
     if(*end != 0) // nie osemkowa wiec jeszcze nie zamieniona na long double
         number = strtold(word, &end); //wiec zamieniam na ld
-    if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') end = word; //jesli +/- przed 16tokową to co xd?
+    if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') end = word;
     if(*word == '0' && *(word + 1) == 'x' && *(word + 2) == 0){
         *end = 0;
         number = 0;

@@ -60,7 +60,6 @@ static inline Tree search(long double *n_new, int n_new_size, char **nan_new, in
     if(data == NULL)
         return NULL;
     int compared = compare(n_new, n_new_size, nan_new, nan_new_size, data->n, data->n_size, data->nan, data->nan_size);
-    //kurczaki2(nan_new, nan_new_size);
     if(compared == -1)
         return search(n_new, n_new_size, nan_new, nan_new_size, line, data->left);
     if(compared == 1)
@@ -144,9 +143,8 @@ Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_si
     add_list(searched->lines, line);
 
     free(n_new);
-    for(int i = 0; i < nan_new_size; i++){              
+    for(int i = 0; i < nan_new_size; i++)
         free(*(nan_new + i));
-    }
     free(nan_new);
 
     return data;
@@ -155,13 +153,9 @@ Tree add_line(long double *n_new, int n_new_size, char **nan_new, int nan_new_si
 void delete_tree(Tree data){
     if(data){
         free(data->n);
-
-        for(int i = 0; i < data->nan_size; i++){
+        for(int i = 0; i < data->nan_size; i++)
             free(*(data->nan + i));
-        }
-
         free(data->nan);
-
         delete_tree(data->left);
         delete_tree(data->right);
         free(data);
