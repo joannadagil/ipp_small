@@ -14,7 +14,7 @@ int main(){
 
 	size_t size = STARTVALUE;
 	char *row = NULL;
-    int read;
+    size_t read;
     int line_no = 1;
 
     Tree data = NULL;
@@ -25,7 +25,7 @@ int main(){
     int *n_size; int *nan_size; //gwaizki
     n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
 
-	while ((read = getline(&row, &size, stdin)) != -1){
+	while ((read = getline(&row, &size, stdin)) >= 0){
         if (errno == ENOMEM) exit(1);
         int valid = process_line(row, &n, n_size, &nan, nan_size, read); //& z sizów
         if(valid > 0)
