@@ -14,7 +14,7 @@ int main(){
 
 	size_t size = STARTVALUE;
 	char *row = NULL;
-    size_t read;
+    int read;
     int line_no = 1;
 
     Tree data = NULL;
