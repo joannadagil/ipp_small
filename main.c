@@ -14,7 +14,7 @@ int main(){
 
 	size_t size = STARTVALUE;
 	char *row = NULL;
-    int read;
+    ssize_t read;
     int line_no = 1;
 
     Tree data = NULL;
@@ -28,7 +28,7 @@ int main(){
 
 	while ((read = getline(&row, &size, stdin)) != -1){
         if (errno == ENOMEM) exit(1);
-        int valid = process_line(row, &n, n_size, &nan, nan_size); //& z sizów
+        int valid = process_line(row, &n, n_size, &nan, nan_size, read); //& z sizów
         if(valid > 0)
             data = add_line(n, *n_size, nan, *nan_size, line_no, data, &all_lines);
         if(valid < 0)

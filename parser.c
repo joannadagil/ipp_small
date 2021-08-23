@@ -31,13 +31,16 @@ static inline void tolower_line(char *line){
     }
 }
 
-static inline int valid(char *line){
+static inline int valid(char *line, ssize_t read){
+    ssize_t starting = line;
     if(*line == '\n' || *line == '#') return IGNORED;
     while(*line != 0 && *line != '\n'){
         if(*line < INVALID1 || (INVALID2 < *line && *line < INVALID3) || *line > INVALID4)
             return INVALID;
         line += 1;
     }
+    if(*line == 0 && read < line - starting)
+        return INVALID;
     return VALID;
 }
 
@@ -195,9 +198,9 @@ void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i
 }
 
 
-int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i){
+int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i, ssize_t read){
     
-    int validity = valid(line);
+    int validity = valid(line, read);
     if(validity != VALID) //(validity == IGNORED || validity == INVALID)
         return validity;
 
