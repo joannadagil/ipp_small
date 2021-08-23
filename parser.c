@@ -32,14 +32,15 @@ static inline void tolower_line(char *line){
 }
 
 static inline int valid(char *line, int read){
-    char *starting = line;
+    char *starting;
+    starting = line;
     if(*line == '\n' || *line == '#') return IGNORED;
     while(*line != 0 && *line != '\n'){
         if(*line < INVALID1 || (INVALID2 < *line && *line < INVALID3) || *line > INVALID4)
             return INVALID;
         line += 1;
     }
-    if(*line == 0 && read < line - starting)
+    if(*line == 0 && line - starting < read)
         return INVALID;
     return VALID;
 }
