@@ -133,7 +133,7 @@ static inline void sort_nan(char **n, int l, int r){
 
 // ----------------------------------------------------------------------
 
-int save_number(long double **n, int *n_i, int n_size, long double number){
+static inline int save_number(long double **n, int *n_i, int n_size, long double number){
     if(*n_i == n_size){
         n_size *= 2;
         *n = realloc(*n, n_size * sizeof(long double));
@@ -144,7 +144,7 @@ int save_number(long double **n, int *n_i, int n_size, long double number){
     return n_size;
 }
 
-int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
+static inline int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
     if(*nan_i == nan_size){
         nan_size = nan_size * 2;
         *nan = realloc(*nan, nan_size * sizeof(char*));
@@ -168,7 +168,7 @@ int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
     return nan_size;
 }
 
-void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i, int *nan_size, int *n_size) {
+static inline void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i, int *nan_size, int *n_size) {
     
     char *end; // wskaznik czy slowo jest liczba (=NULL) czy nieliczbą (=/=NULL)
     long double number = octal(word, &end);
