@@ -150,8 +150,6 @@ static inline int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
         *nan = realloc(*nan, nan_size * sizeof(char*));
         if(nan == NULL) exit(1);
     }
-
-    //policznie word_length
     int word_length = 1; 
     char *word2;
     word2 = word;
@@ -159,7 +157,6 @@ static inline int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
         word2++;
         word_length++;
     }
-
     char *word_copy = malloc(word_length * sizeof(char));
     if(word_length != 0 && word == NULL) exit(1);
     strcpy(word_copy, word);
@@ -169,10 +166,8 @@ static inline int save_nan(char ***nan, int *nan_i, int nan_size, char *word){
 }
 
 static inline void process_word(char* word, long double **n, int *n_i, char ***nan, int *nan_i, int *nan_size, int *n_size) {
-    
     char *end; // wskaznik czy slowo jest liczba (=NULL) czy nieliczbą (=/=NULL)
     long double number = octal(word, &end);
-    
     if(*end != 0) // nie osemkowa wiec jeszcze nie zamieniona na long double
         number = strtold(word, &end); //wiec zamieniam na ld
     if((*word == '-' || *word == '+') && *(word + 1) == '0' && *(word + 2) == 'x') end = word;
@@ -188,44 +183,32 @@ static inline void process_word(char* word, long double **n, int *n_i, char ***n
             i++;
         }
     }
-    if(*end == 0 && isnan(number))
-        end = word;
-
-    if(*end == 0)
-        *n_size = save_number(n, n_i, *n_size, number);
-    else
-        *nan_size = save_nan(nan, nan_i, *nan_size, word);
+    if(*end == 0 && isnan(number)) end = word;
+    if(*end == 0) *n_size = save_number(n, n_i, *n_size, number);
+    else *nan_size = save_nan(nan, nan_i, *nan_size, word);
 }
 
 
 int process_line(char* line, long double **n, int *n_i, char ***nan, int *nan_i, int read){
-    
     int validity = valid(line, read);
     if(validity != VALID) //(validity == IGNORED || validity == INVALID)
         return validity;
-
     tolower_line(line); 
-
     *n = malloc(STARTINGSIZE * sizeof(long double));
     if(n == NULL) exit(1);
     *nan = malloc(STARTINGSIZE * sizeof(char*));
     if(*nan == NULL) exit(1);
-
     int *n_size; int *nan_size;
     n_size = malloc(sizeof(int)); nan_size = malloc(sizeof(int));
     if(n_size == NULL || nan_size == NULL) exit(1);
     *n_size = STARTINGSIZE, *nan_size = STARTINGSIZE;
-
     *n_i = 0; *nan_i = 0; // iteratory po tablicach z liczbami i nieliczbami
-
     char *word;
     word = strtok(line, DELIMITERS);
-
     while(word != NULL){
         process_word(word, n, n_i, nan, nan_i, nan_size, n_size);
         word = strtok(NULL, DELIMITERS);
     }
-    
     free(n_size); free(nan_size); 
     sort_n(*n, 0, *n_i - 1);
     if(*nan_i != 0) sort_nan(*nan, 0, *nan_i - 1);
